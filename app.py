@@ -1,3 +1,4 @@
+import joblib
 import streamlit as st
 import pickle
 import pandas as pd
@@ -90,7 +91,6 @@ html, body, [class*="css"] {
 """, unsafe_allow_html=True)
 
 # ---------------- LOAD MODEL ----------------
-import joblib
 
 model = joblib.load("bagga.pkl")
 # ---------------- TITLE ----------------
