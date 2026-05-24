@@ -148,17 +148,29 @@ contract_map = {
 # ---------------- PREDICT ----------------
 if st.button("✨ Predict Churn Risk"):
 
-    input_data = np.array([[
-        gender,
-        senior,
-        partner,
-        dependents,
-        tenure,
-        monthly,
-        total,
-        internet_map[internet],
-        contract_map[contract]
-    ]])
+    # Create dataframe from user input
+    input_data = pd.DataFrame({
+        'gender': [gender],
+        'SeniorCitizen': [senior],
+        'Partner': [partner],
+        'Dependents': [dependents],
+        'tenure': [tenure],
+        'MonthlyCharges': [monthly],
+        'TotalCharges': [total],
+        'InternetService': [internet],
+        'Contract': [contract]
+    })
+
+    # Convert categorical columns into dummies
+    input_data = pd.get_dummies(input_data)
+
+    # Match training columns (VERY IMPORTANT)
+    training_columns = joblib.load("columns.pkl")
+
+    input_data = input_data.reindex(
+        columns=training_columns,
+        fill_value=0
+    )
 
     prediction = model.predict(input_data)[0]
 
